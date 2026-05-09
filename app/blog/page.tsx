@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: 'Read the latest trends in Nigerian and UK property markets. Expert advice for diaspora investors and local buyers.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function BlogListing() {
   await connectDB();
   const posts = await BlogPost.find({ published: true }).sort({ createdAt: -1 });

@@ -19,6 +19,8 @@ async function getFeaturedListings() {
   }
 }
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const featuredListings = await getFeaturedListings();
 

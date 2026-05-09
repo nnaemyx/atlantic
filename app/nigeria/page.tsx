@@ -17,6 +17,8 @@ async function getNigeriaListings() {
   }
 }
 
+export const dynamic = 'force-dynamic';
+
 export default async function NigeriaProperties() {
   const listings = await getNigeriaListings();
 

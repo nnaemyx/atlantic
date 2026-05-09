@@ -23,6 +23,8 @@ async function getUKListings() {
   }
 }
 
+export const dynamic = 'force-dynamic';
+
 export default async function UKProperty() {
   const ukListings = await getUKListings();
   return (
