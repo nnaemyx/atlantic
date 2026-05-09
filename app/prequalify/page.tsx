@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronLeft, CheckCircle2, ShieldCheck, Landmark, Globe, Briefcase } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
-export default function PrequalifyPage() {
+function PrequalifyForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialProject = searchParams.get('project') || '';
@@ -350,5 +350,17 @@ export default function PrequalifyPage() {
       </main>
       <Footer />
     </>
+  );
+}
+
+export default function PrequalifyPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen pt-32 pb-20 bg-brand-cream flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-brand-emerald/20 border-t-brand-emerald rounded-full animate-spin"></div>
+      </div>
+    }>
+      <PrequalifyForm />
+    </Suspense>
   );
 }
