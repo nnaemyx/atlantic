@@ -34,15 +34,15 @@ export default async function UKProperty() {
         {/* HERO */}
         <section className="bg-brand-emerald py-16 md:py-24 text-white">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="text-3xl md:text-6xl font-bold mb-6">
+            <h1 className="text-2xl md:text-4xl font-bold mb-6 text-brand-gold">
               Buy UK Property with Confidence—<span className="text-brand-gold italic">Even If You’re Not in the UK</span>
             </h1>
             <p className="text-emerald-100/70 text-base md:text-lg max-w-3xl mx-auto mb-10">
               We help Nigerians secure high-yielding UK real estate with full transparency, local market expertise, and secure legal support.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link href="/prequalify" className="btn-gold px-10">Book Strategy Call</Link>
-              <Link href="/prequalify" className="bg-white/10 border border-white/20 hover:bg-white/20 px-10 py-3 rounded-md transition-all">Check Eligibility</Link>
+              <Link href="/prequalify?market=UK" className="btn-gold px-10">Book Strategy Call</Link>
+              <Link href="/prequalify?market=UK" className="bg-white/10 border border-white/20 hover:bg-white/20 px-10 py-3 rounded-md transition-all">Check Eligibility</Link>
             </div>
           </div>
         </section>
@@ -81,7 +81,7 @@ export default async function UKProperty() {
                   </li>
                 </ul>
               </div>
-              
+
               <div className="bg-brand-cream p-12 rounded-3xl border border-zinc-100">
                 <div className="flex items-center gap-2 text-brand-emerald mb-4">
                   <ShieldCheck className="h-6 w-6" />
@@ -156,7 +156,7 @@ export default async function UKProperty() {
             ) : (
               <div className="py-20 text-center bg-brand-cream rounded-3xl border border-zinc-100">
                 <p className="text-zinc-500 font-medium">UK property listings will appear here once added via admin.</p>
-                <Link href="/prequalify" className="btn-gold px-10 py-3 inline-block mt-6">
+                <Link href="/prequalify?market=UK" className="btn-gold px-10 py-3 inline-block mt-6">
                   Request a UK Property
                 </Link>
               </div>
@@ -178,7 +178,7 @@ export default async function UKProperty() {
         <section className="py-24 text-center">
           <div className="container mx-auto px-4">
             <h2 className="text-4xl font-bold mb-8 font-heading">Ready for Your UK Strategy Call?</h2>
-            <Link href="/prequalify" className="btn-gold px-16 py-4 inline-flex items-center gap-3">
+            <Link href="/prequalify?market=UK" className="btn-gold px-16 py-4 inline-flex items-center gap-3">
               <PhoneCall className="h-5 w-5" /> Book Strategy Call
             </Link>
           </div>
@@ -191,6 +191,6 @@ export default async function UKProperty() {
 
 function XCircle({ className }: { className?: string }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10" /><path d="m15 9-6 6" /><path d="m9 9 6 6" /></svg>
   )
 }

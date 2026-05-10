@@ -20,6 +20,7 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
+    { name: 'About', href: '/about' },
     { name: 'Nigeria Properties', href: '/nigeria' },
     { name: 'UK Properties', href: '/uk' },
     { name: 'Mortgage', href: '/mortgage' },

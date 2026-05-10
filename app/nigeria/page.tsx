@@ -64,7 +64,7 @@ export default async function NigeriaProperties() {
               </div>
               <h2 className="text-xl font-bold text-zinc-800 mb-2">No Nigeria Listings Yet</h2>
               <p className="text-zinc-500 text-sm mb-6">Listings added via the admin panel will appear here.</p>
-              <Link href="/prequalify" className="btn-gold px-8 py-3 inline-block">
+              <Link href="/prequalify?market=Nigeria" className="btn-gold px-8 py-3 inline-block">
                 Register Interest
               </Link>
             </div>
@@ -77,7 +77,7 @@ export default async function NigeriaProperties() {
               Our network covers over 50+ developers in Nigeria. We can source the ideal property
               based on your specific budget, location, and property type.
             </p>
-            <Link href="/prequalify" className="btn-gold px-12 py-4 inline-block">
+            <Link href="/prequalify?market=Nigeria" className="btn-gold px-12 py-4 inline-block">
               Request Bespoke Sourcing
             </Link>
           </div>

@@ -24,6 +24,7 @@ const Footer = () => {
           <div>
             <h3 className="font-heading text-lg font-semibold text-white mb-6">Invest</h3>
             <ul className="space-y-4 text-sm">
+              <li><Link href="/about" className="hover:text-brand-gold transition-colors">About Us</Link></li>
               <li><Link href="/nigeria" className="hover:text-brand-gold transition-colors">Nigeria Properties</Link></li>
               <li><Link href="/uk" className="hover:text-brand-gold transition-colors">UK Properties</Link></li>
               <li><Link href="/mortgage" className="hover:text-brand-gold transition-colors">Diaspora Mortgage</Link></li>

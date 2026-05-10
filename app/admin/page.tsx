@@ -878,29 +878,22 @@ export default function AdminDashboard() {
                     </div>
                   </div>
 
-                  {/* Additional Conditional Info */}
-                  {(selectedLead.data?.annualIncome || selectedLead.data?.employmentStatus || selectedLead.data?.developmentInterest) && (
+                  {/* Comprehensive Additional Details (Dynamic) */}
+                  {selectedLead.data && Object.keys(selectedLead.data).filter(key => !['name', 'email', 'phone', 'location', 'budget', 'targetMarket', 'type'].includes(key) && selectedLead.data[key] !== '' && selectedLead.data[key] !== null).length > 0 && (
                     <div className="mt-8 pt-6 border-t border-zinc-100">
-                      <h3 className="text-sm font-bold text-emerald-950 mb-4 flex items-center gap-2"><FileText className="h-4 w-4 text-brand-gold" /> Additional Details</h3>
+                      <h3 className="text-sm font-bold text-emerald-950 mb-4 flex items-center gap-2"><FileText className="h-4 w-4 text-brand-gold" /> Comprehensive Profile</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {selectedLead.data?.annualIncome && (
-                          <div className="bg-zinc-50 p-3 rounded-xl border border-zinc-100">
-                            <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1">Annual Income</p>
-                            <p className="font-semibold text-zinc-900">{selectedLead.data.annualIncome}</p>
-                          </div>
-                        )}
-                        {selectedLead.data?.employmentStatus && (
-                          <div className="bg-zinc-50 p-3 rounded-xl border border-zinc-100">
-                            <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1">Employment</p>
-                            <p className="font-semibold text-zinc-900">{selectedLead.data.employmentStatus}</p>
-                          </div>
-                        )}
-                        {selectedLead.data?.developmentInterest && (
-                          <div className="bg-zinc-50 p-3 rounded-xl border border-zinc-100 md:col-span-2">
-                            <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1">Specific Property Interest</p>
-                            <p className="font-semibold text-brand-emerald">{selectedLead.data.developmentInterest}</p>
-                          </div>
-                        )}
+                        {Object.entries(selectedLead.data)
+                          .filter(([key, value]) => !['name', 'email', 'phone', 'location', 'budget', 'targetMarket', 'type'].includes(key) && value !== '' && value !== null)
+                          .map(([key, value]) => (
+                            <div key={key} className="bg-zinc-50 p-3 rounded-xl border border-zinc-100">
+                              <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1">
+                                {key.replace(/([A-Z])/g, ' $1').trim()}
+                              </p>
+                              <p className="font-semibold text-zinc-900">{typeof value === 'boolean' ? (value ? 'Yes' : 'No') : String(value)}</p>
+                            </div>
+                          ))
+                        }
                       </div>
                     </div>
                   )}
