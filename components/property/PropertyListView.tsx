@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import ListingCard from './ListingCard';
 import { Search, ChevronLeft, ChevronRight, X, SlidersHorizontal } from 'lucide-react';
 
@@ -20,21 +20,23 @@ export default function PropertyListView({ listings, market, hideDeveloperLink, 
     setCurrentPage(1);
   }, [searchQuery]);
 
-  const filteredListings = listings.filter((listing) => {
-    const q = searchQuery.toLowerCase();
-    return (
-      (listing.title && listing.title.toLowerCase().includes(q)) ||
-      (listing.location && listing.location.toLowerCase().includes(q)) ||
-      (listing.developer && listing.developer.toLowerCase().includes(q))
-    );
-  });
+  const filteredListings = useMemo(() =>
+    listings.filter((listing) => {
+      const q = searchQuery.toLowerCase();
+      return (
+        (listing.title && listing.title.toLowerCase().includes(q)) ||
+        (listing.location && listing.location.toLowerCase().includes(q)) ||
+        (listing.developer && listing.developer.toLowerCase().includes(q))
+      );
+    }),
+    [listings, searchQuery]
+  );
 
-  const totalPages = Math.max(1, Math.ceil(filteredListings.length / itemsPerPage));
+  const totalPages = useMemo(() => Math.max(1, Math.ceil(filteredListings.length / itemsPerPage)), [filteredListings.length, itemsPerPage]);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedListings = filteredListings.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedListings = useMemo(() => filteredListings.slice(startIndex, startIndex + itemsPerPage), [filteredListings, startIndex, itemsPerPage]);
 
-  // Show max 5 page buttons on mobile, 7 on desktop
-  const getPageNumbers = () => {
+  const getPageNumbers = useMemo(() => {
     if (totalPages <= 7) return Array.from({ length: totalPages }, (_, i) => i + 1);
     const pages: (number | '...')[] = [1];
     if (currentPage > 3) pages.push('...');
@@ -44,7 +46,7 @@ export default function PropertyListView({ listings, market, hideDeveloperLink, 
     if (currentPage < totalPages - 2) pages.push('...');
     pages.push(totalPages);
     return pages;
-  };
+  }, [totalPages, currentPage]);
 
   return (
     <div className="space-y-6 md:space-y-10">
@@ -129,7 +131,7 @@ export default function PropertyListView({ listings, market, hideDeveloperLink, 
 
               {/* Page numbers */}
               <div className="flex gap-1">
-                {getPageNumbers().map((page, idx) =>
+                {getPageNumbers.map((page, idx) =>
                   page === '...' ? (
                     <span key={`ellipsis-${idx}`} className="w-9 h-9 flex items-center justify-center text-zinc-400 text-sm">
                       …
