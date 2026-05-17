@@ -277,8 +277,8 @@ export default async function Home() {
               </div>
 
               <div className="relative">
-                <div className="aspect-square rounded-3xl overflow-hidden border-4 border-white/10">
-                  <Image src="https://images.pexels.com/photos/7641842/pexels-photo-7641842.jpeg" alt="Consultation" fill className="object-cover" sizes="(max-width:768px) 100vw, 50vw" />
+                <div className="aspect-square rounded-3xl overflow-hidden border-4 border-white/10 relative">
+                  <img src="https://images.pexels.com/photos/7641842/pexels-photo-7641842.jpeg" alt="Consultation" className="w-full h-full object-cover" />
                 </div>
                 <div className="absolute -bottom-6 -left-6 glass-card p-6 rounded-2xl max-w-xs border-brand-gold/30">
                   <p className="text-brand-emerald font-bold mb-1 italic">&quot;The safest way I&apos;ve found to buy back home while living in London.&quot;</p>
