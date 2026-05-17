@@ -5,6 +5,7 @@ import Footer from '@/components/layout/Footer';
 import connectDB from '@/lib/db';
 import { Listing } from '@/models';
 import { getAllCMS } from '@/lib/cms';
+import Image from 'next/image';
 
 async function getFeaturedListings() {
   try {
@@ -38,14 +39,14 @@ export default async function Home() {
   return (
     <>
       <Navbar />
-      
+
       <main className="flex-1">
         {/* HERO SECTION */}
         <section className="relative min-h-[85vh] sm:h-[90vh] sm:min-h-[600px] flex items-center overflow-hidden">
           <div className="absolute inset-0 z-0">
-            <img 
-              src={cms['home.hero.image'] || "https://images.pexels.com/photos/37019091/pexels-photo-37019091.jpeg"} 
-              alt="Luxury Real Estate" 
+            <img
+              src={cms['home.hero.image'] || "https://images.pexels.com/photos/37019091/pexels-photo-37019091.jpeg"}
+              alt="Luxury Real Estate"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-950/70 to-transparent"></div>
@@ -237,7 +238,7 @@ export default async function Home() {
           <div className="absolute right-0 top-0 opacity-10 pointer-events-none">
             <ShieldCheck className="w-96 h-96 -mr-20 -mt-20" />
           </div>
-          
+
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div>
@@ -250,7 +251,7 @@ export default async function Home() {
                       <p className="text-emerald-100/70">{cms['home.process.step1.text'] || 'Explore our curated list of developments in Nigeria and the UK.'}</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex gap-6">
                     <div className="flex-shrink-0 w-12 h-12 bg-brand-gold rounded-full flex items-center justify-center text-emerald-950 font-bold text-xl">2</div>
                     <div>
@@ -267,14 +268,14 @@ export default async function Home() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="mt-12">
                   <Link href="/prequalify" className="btn-gold inline-block px-12 py-4 text-lg">
                     Start Your Journey
                   </Link>
                 </div>
               </div>
-              
+
               <div className="relative">
                 <div className="aspect-square rounded-3xl overflow-hidden border-4 border-white/10">
                   <Image src="https://images.pexels.com/photos/7641842/pexels-photo-7641842.jpeg" alt="Consultation" fill className="object-cover" sizes="(max-width:768px) 100vw, 50vw" />
@@ -288,7 +289,7 @@ export default async function Home() {
           </div>
         </section>
       </main>
-      
+
       <Footer initialCms={cms} />
     </>
   );
