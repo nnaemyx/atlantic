@@ -5,6 +5,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { Calendar, ArrowRight } from 'lucide-react';
 import { Metadata } from 'next';
+import { getAllCMS } from '@/lib/cms';
 
 export const metadata: Metadata = {
   title: 'Investment Insights | Expert Real Estate Advice',
@@ -16,6 +17,7 @@ export const dynamic = 'force-dynamic';
 export default async function BlogListing() {
   await connectDB();
   const posts = await BlogPost.find({ published: true }).sort({ createdAt: -1 });
+  const cms = await getAllCMS();
 
   return (
     <>
@@ -23,9 +25,9 @@ export default async function BlogListing() {
       <main className="pt-24 pb-20">
         <header className="bg-brand-emerald py-24 mb-16 relative overflow-hidden">
           <div className="container mx-auto px-4 text-center relative z-10">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 font-heading">Investment Insights</h1>
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 font-heading">{cms['blog.hero.title'] || 'Investment Insights'}</h1>
             <p className="text-emerald-100/70 max-w-2xl mx-auto text-lg leading-relaxed">
-              Strategic advice on real estate investment, capital growth, and securing your future through property.
+              {cms['blog.hero.subtitle'] || 'Strategic advice on real estate investment, capital growth, and securing your future through property.'}
             </p>
           </div>
           <div className="absolute inset-0 opacity-5">
@@ -37,7 +39,8 @@ export default async function BlogListing() {
         <section className="container mx-auto px-4 sm:px-6 lg:px-8">
           {posts.length === 0 ? (
             <div className="text-center py-32 bg-white rounded-3xl border border-dashed border-zinc-200">
-              <p className="text-zinc-400 font-medium">New insights are being curated. Check back soon!</p>
+              <h3 className="text-xl font-bold text-zinc-700 mb-2">{cms['blog.empty.title'] || 'Insights Coming Soon'}</h3>
+              <p className="text-zinc-400 font-medium">{cms['blog.empty.text'] || 'Our editorial team is preparing expert content.'}</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -82,7 +85,7 @@ export default async function BlogListing() {
           )}
         </section>
       </main>
-      <Footer />
+      <Footer initialCms={cms} />
     </>
   );
 }

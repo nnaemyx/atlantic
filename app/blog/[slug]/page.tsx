@@ -5,11 +5,13 @@ import Footer from '@/components/layout/Footer';
 import { Calendar, User, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { getAllCMS } from '@/lib/cms';
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   await connectDB();
   const { slug } = await params;
   const post = await BlogPost.findOne({ slug, published: true });
+  const cms = await getAllCMS();
 
   if (!post) {
     notFound();
@@ -66,7 +68,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </div>
         </article>
       </main>
-      <Footer />
+      <Footer initialCms={cms} />
     </>
   );
 }

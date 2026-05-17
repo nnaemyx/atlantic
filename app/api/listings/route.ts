@@ -25,6 +25,8 @@ export async function POST(request: Request) {
   try {
     await connectDB();
     const body = await request.json();
+    if (body.beds === '') body.beds = undefined;
+    if (body.rooms === '') body.rooms = undefined;
 
     // Auto-generate human-readable listingId: NG-01, UK-03, etc.
     const prefix = body.type === 'UK' ? 'UK' : 'NG';

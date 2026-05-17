@@ -7,7 +7,7 @@ import { ChevronRight, ChevronLeft, CheckCircle2, ShieldCheck, Landmark, Globe }
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
-function PrequalifyForm() {
+function PrequalifyForm({ initialCms }: { initialCms: Record<string, string> }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialProject = searchParams.get('project') || '';
@@ -17,7 +17,8 @@ function PrequalifyForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
-  
+  const [cms] = useState<Record<string, string>>(initialCms);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -182,9 +183,9 @@ function PrequalifyForm() {
                     <div className="w-20 h-20 bg-emerald-50 text-brand-emerald rounded-full flex items-center justify-center mx-auto mb-6">
                       <CheckCircle2 className="h-10 w-10" />
                     </div>
-                    <h2 className="text-3xl font-bold mb-4">Application Received!</h2>
+                    <h2 className="text-3xl font-bold mb-4">{cms['prequalify.success.title'] || 'Application Received!'}</h2>
                     <p className="text-zinc-600 mb-8">
-                      Thank you, {formData.name.split(' ')[0]}. Our senior property advisor will review your profile and contact you via {formData.email} within 24 hours.
+                      {cms['prequalify.success.message'] || `Thank you, ${formData.name.split(' ')[0]}. Our senior property advisor will review your profile and contact you via ${formData.email} within 24 hours.`}
                     </p>
                     <button 
                       onClick={() => router.push('/')}
@@ -203,8 +204,8 @@ function PrequalifyForm() {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -20 }}
                       >
-                        <h2 className="text-2xl font-bold mb-2">Basic Information</h2>
-                        <p className="text-zinc-500 mb-8 text-sm">Let's start with your contact details.</p>
+                        <h2 className="text-2xl font-bold mb-2">{cms['prequalify.step1.title'] || 'Basic Information'}</h2>
+                        <p className="text-zinc-500 mb-8 text-sm">{cms['prequalify.step1.subtitle'] || "Let's start with your contact details."}</p>
                         
                         <div className="space-y-6">
                           <div>
@@ -254,8 +255,8 @@ function PrequalifyForm() {
                     {/* Step 2 UK: Financial Profile */}
                     {step === 2 && isUK && (
                       <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                        <h2 className="text-2xl font-bold mb-2">Financial Profile</h2>
-                        <p className="text-zinc-500 mb-8 text-sm">Understanding your investment capacity.</p>
+                        <h2 className="text-2xl font-bold mb-2">{cms['prequalify.step2uk.title'] || 'Financial Profile'}</h2>
+                        <p className="text-zinc-500 mb-8 text-sm">{cms['prequalify.step2uk.subtitle'] || 'Understanding your investment capacity.'}</p>
                         
                         <div className="space-y-6">
                           <div>
@@ -370,7 +371,7 @@ function PrequalifyForm() {
                           <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-100 flex items-start gap-3 mt-8">
                             <input type="checkbox" id="feeAcceptance" className="mt-1" checked={formData.feeAcceptance} onChange={(e) => updateFormData({ feeAcceptance: e.target.checked })} />
                             <label htmlFor="feeAcceptance" className="text-sm text-emerald-900 leading-relaxed cursor-pointer">
-                              I understand that Atlantic Property charges a sourcing/consultancy fee for finding and securing UK properties, payable upon successful engagement.
+                              {cms['prequalify.fee.notice'] || 'I understand that Atlantic Property charges a sourcing/consultancy fee for finding and securing UK properties, payable upon successful engagement.'}
                             </label>
                           </div>
                         </div>
@@ -380,8 +381,8 @@ function PrequalifyForm() {
                     {/* Step 2 Nigeria: Core Fields */}
                     {step === 2 && !isUK && (
                       <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                        <h2 className="text-2xl font-bold mb-2">Investment Details</h2>
-                        <p className="text-zinc-500 mb-8 text-sm">Tell us about your target property in Nigeria.</p>
+                        <h2 className="text-2xl font-bold mb-2">{cms['prequalify.step2ng.title'] || 'Investment Details'}</h2>
+                        <p className="text-zinc-500 mb-8 text-sm">{cms['prequalify.step2ng.subtitle'] || 'Tell us about your target property in Nigeria.'}</p>
                         
                         <div className="space-y-6">
                           <div>
@@ -460,8 +461,8 @@ function PrequalifyForm() {
                     {/* Step 3 Nigeria: Confirmation */}
                     {step === 3 && !isUK && (
                       <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                        <h2 className="text-2xl font-bold mb-2">Final Confirmation</h2>
-                        <p className="text-zinc-500 mb-8 text-sm">Review your strategy before submission.</p>
+                        <h2 className="text-2xl font-bold mb-2">{cms['prequalify.confirm.title'] || 'Final Confirmation'}</h2>
+                        <p className="text-zinc-500 mb-8 text-sm">{cms['prequalify.confirm.subtitle'] || 'Review your strategy before submission.'}</p>
                         
                         <div className="bg-zinc-50 p-6 rounded-2xl border border-zinc-100 space-y-4 mb-8">
                           <div className="flex justify-between text-sm">
@@ -535,24 +536,36 @@ function PrequalifyForm() {
           <div className="text-center mt-8">
             <p className="text-xs text-zinc-400 flex items-center justify-center gap-2">
               <ShieldCheck className="h-3 w-3" />
-              128-bit SSL Secured Lead Submission
+              {cms['prequalify.privacy.notice'] || '128-bit SSL Secured Lead Submission'}
             </p>
           </div>
         </div>
       </main>
-      <Footer />
+      <Footer initialCms={cms} />
     </>
   );
 }
 
 export default function PrequalifyPage() {
+  const [cms, setCms] = useState({});
+  
+  useEffect(() => {
+    fetch('/api/site-content').then(r => r.json()).then(d => {
+      if (Array.isArray(d)) {
+        const m: any = {};
+        d.forEach(i => m[i.key] = i.value);
+        setCms(m);
+      }
+    }).catch(()=>{});
+  }, []);
+
   return (
     <Suspense fallback={
       <div className="min-h-screen pt-32 pb-20 bg-brand-cream flex items-center justify-center">
         <div className="w-12 h-12 border-4 border-brand-emerald/20 border-t-brand-emerald rounded-full animate-spin"></div>
       </div>
     }>
-      <PrequalifyForm />
+      <PrequalifyForm initialCms={cms} />
     </Suspense>
   );
 }

@@ -2,10 +2,12 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { ShieldCheck, Target, Users, MapPin, CheckCircle, Globe, Landmark } from 'lucide-react';
 import Link from 'next/link';
+import { getAllCMS } from '@/lib/cms';
 
 export const dynamic = 'force-dynamic';
 
-export default function AboutUs() {
+export default async function AboutUs() {
+  const cms = await getAllCMS();
   return (
     <>
       <Navbar />
@@ -14,11 +16,9 @@ export default function AboutUs() {
         <section className="bg-emerald-950 py-20 text-white relative overflow-hidden">
           <div className="absolute top-0 right-0 w-1/2 h-full bg-brand-gold/10 skew-x-12 transform translate-x-20"></div>
           <div className="container mx-auto px-4 relative z-10 text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white font-heading">
-              About <span className="text-brand-gold">Atlantic Property</span>
-            </h1>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white font-heading" dangerouslySetInnerHTML={{ __html: cms['about.hero.title'] || 'About <span class="text-brand-gold">Atlantic Property</span>' }} />
             <p className="text-emerald-100/70 text-lg md:text-xl max-w-3xl mx-auto mb-10">
-              We are a premier real estate advisory firm dedicated to connecting Nigerians at home and in the diaspora with secure, high-yield investment opportunities in Nigeria and the UK.
+              {cms['about.hero.subtitle'] || 'We are a premier real estate advisory firm dedicated to connecting Nigerians at home and in the diaspora with secure, high-yield investment opportunities in Nigeria and the UK.'}
             </p>
           </div>
         </section>
@@ -28,15 +28,15 @@ export default function AboutUs() {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div>
-                <h2 className="text-3xl font-bold mb-6 font-heading">Our Mission</h2>
+                <h2 className="text-3xl font-bold mb-6 font-heading">{cms['about.mission.title'] || 'Our Mission'}</h2>
                 <p className="text-zinc-600 leading-relaxed mb-6">
-                  For years, Nigerians living abroad have struggled with the complexities and risks of investing back home. From unreliable developers to untrustworthy family members managing projects, the path to building real estate wealth has been fraught with anxiety.
+                  {cms['about.mission.p1'] || 'For years, Nigerians living abroad have struggled with the complexities and risks of investing back home. From unreliable developers to untrustworthy family members managing projects, the path to building real estate wealth has been fraught with anxiety.'}
                 </p>
                 <p className="text-zinc-600 leading-relaxed mb-6">
-                  Similarly, accessing the lucrative UK property market often felt impossible due to stringent mortgage requirements and local market nuances.
+                  {cms['about.mission.p2'] || 'Similarly, accessing the lucrative UK property market often felt impossible due to stringent mortgage requirements and local market nuances.'}
                 </p>
                 <p className="text-zinc-600 leading-relaxed font-bold text-emerald-950">
-                  Atlantic Property was built to solve this. We act as your secure bridge, vetting every developer, handling the legalities, and ensuring your capital is deployed safely into assets that appreciate.
+                  {cms['about.mission.p3'] || 'Atlantic Property was built to solve this. We act as your secure bridge, vetting every developer, handling the legalities, and ensuring your capital is deployed safely into assets that appreciate.'}
                 </p>
               </div>
               <div className="bg-brand-cream p-12 rounded-3xl border border-zinc-100">
@@ -117,7 +117,7 @@ export default function AboutUs() {
           </div>
         </section>
       </main>
-      <Footer />
+      <Footer initialCms={cms} />
     </>
   );
 }

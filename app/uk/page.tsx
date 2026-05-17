@@ -1,10 +1,11 @@
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import ListingCard from '@/components/property/ListingCard';
-import { ShieldCheck, MapPin, PhoneCall, AlertTriangle, CheckCircle, TrendingUp } from 'lucide-react';
+import PropertyListView from '@/components/property/PropertyListView';
 import Link from 'next/link';
 import connectDB from '@/lib/db';
 import { Listing } from '@/models';
+import { getAllCMS } from '@/lib/cms';
+import { AlertTriangle, CheckCircle, ShieldCheck } from 'lucide-react';
 
 const locations = [
   { name: 'London', image: 'https://images.pexels.com/photos/10949172/pexels-photo-10949172.jpeg', description: 'Capital growth and global stability.' },
@@ -16,7 +17,12 @@ async function getUKListings() {
   try {
     await connectDB();
     const listings = await Listing.find({ type: 'UK' }).sort({ order: 1, createdAt: -1 }).lean();
-    return listings;
+    return listings.map((l: any) => ({
+      ...l,
+      _id: l._id?.toString(),
+      createdAt: l.createdAt?.toString(),
+      updatedAt: l.updatedAt?.toString(),
+    }));
   } catch (error) {
     console.error('Failed to fetch UK listings:', error);
     return [];
@@ -27,6 +33,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function UKProperty() {
   const ukListings = await getUKListings();
+  const cms = await getAllCMS();
   return (
     <>
       <Navbar />
@@ -34,15 +41,12 @@ export default async function UKProperty() {
         {/* HERO */}
         <section className="bg-brand-emerald py-16 md:py-24 text-white">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="text-2xl md:text-4xl font-bold mb-6 text-brand-gold">
-              Buy UK Property with Confidence—<span className="text-brand-gold italic">Even If You’re Not in the UK</span>
-            </h1>
+            <h1 className="text-2xl md:text-4xl font-bold mb-6 text-brand-gold" dangerouslySetInnerHTML={{ __html: cms['uk.hero.title'] || 'Buy UK Property with Confidence—<span class="text-brand-gold italic">Even If You’re Not in the UK</span>' }} />
             <p className="text-emerald-100/70 text-base md:text-lg max-w-3xl mx-auto mb-10">
-              We help Nigerians secure high-yielding UK real estate with full transparency, local market expertise, and secure legal support.
+              {cms['uk.hero.subtitle'] || 'We help Nigerians secure high-yielding UK real estate with full transparency, local market expertise, and secure legal support.'}
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link href="/prequalify?market=UK" className="btn-gold px-10">Book Strategy Call</Link>
-              <Link href="/prequalify?market=UK" className="bg-white/10 border border-white/20 hover:bg-white/20 px-10 py-3 rounded-md transition-all">Check Eligibility</Link>
+            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+              <Link href="/prequalify?market=UK" className="btn-gold px-8 sm:px-10 py-3 sm:py-4 text-sm sm:text-base text-center">Book Strategy Call</Link>
             </div>
           </div>
         </section>
@@ -110,19 +114,22 @@ export default async function UKProperty() {
         {/* LOCATIONS */}
         <section className="py-24 bg-zinc-50">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-16 font-heading">Key Investment Locations</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {locations.map((loc) => (
-                <div key={loc.name} className="bg-white rounded-2xl overflow-hidden shadow-sm group">
-                  <div className="h-64 relative overflow-hidden">
-                    <img src={loc.image} alt={loc.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-16 font-heading">Key Investment Locations</h2>
+            {/* Mobile: horizontal scroll, desktop: 3-col grid */}
+            <div className="-mx-4 sm:mx-0">
+              <div className="flex gap-4 overflow-x-auto pb-4 px-4 sm:px-0 snap-x snap-mandatory md:grid md:grid-cols-3 md:gap-8 md:overflow-visible md:pb-0 scrollbar-hide">
+                {locations.map((loc) => (
+                  <div key={loc.name} className="bg-white rounded-2xl overflow-hidden shadow-sm group flex-shrink-0 w-[72vw] sm:w-[55vw] md:w-auto snap-start">
+                    <div className="h-44 sm:h-56 md:h-64 relative overflow-hidden">
+                      <img src={loc.image} alt={loc.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    </div>
+                    <div className="p-5 sm:p-8">
+                      <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">{loc.name}</h3>
+                      <p className="text-zinc-500 text-sm">{loc.description}</p>
+                    </div>
                   </div>
-                  <div className="p-8">
-                    <h3 className="text-xl font-bold mb-2">{loc.name}</h3>
-                    <p className="text-zinc-500 text-sm">{loc.description}</p>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -130,29 +137,14 @@ export default async function UKProperty() {
         {/* UK LISTINGS from Admin */}
         <section className="py-24 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 sm:mb-12 gap-4">
               <div className="max-w-2xl">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Available UK Properties</h2>
-                <p className="text-zinc-600">Curated opportunities sourced by our UK-based team.</p>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4">Available UK Properties</h2>
+                <p className="text-zinc-600 text-sm sm:text-base">Curated opportunities sourced by our UK-based team.</p>
               </div>
             </div>
             {ukListings.length > 0 ? (
-              <div className="space-y-12">
-                {ukListings.map((listing: any) => (
-                  <ListingCard
-                    key={listing._id?.toString()}
-                    listing={{
-                      id: listing.listingId || listing._id?.toString(),
-                      title: listing.title,
-                      developer: listing.developer,
-                      location: listing.location,
-                      priceRange: listing.priceRange,
-                      images: listing.images?.length > 0 ? listing.images : (listing.image ? [listing.image] : []),
-                      overview: listing.overview,
-                    }}
-                  />
-                ))}
-              </div>
+              <PropertyListView listings={ukListings} market="UK" />
             ) : (
               <div className="py-20 text-center bg-brand-cream rounded-3xl border border-zinc-100">
                 <p className="text-zinc-500 font-medium">UK property listings will appear here once added via admin.</p>
@@ -174,17 +166,8 @@ export default async function UKProperty() {
           </div>
         </section>
 
-        {/* FINAL CTA */}
-        <section className="py-24 text-center">
-          <div className="container mx-auto px-4">
-            <h2 className="text-4xl font-bold mb-8 font-heading">Ready for Your UK Strategy Call?</h2>
-            <Link href="/prequalify?market=UK" className="btn-gold px-16 py-4 inline-flex items-center gap-3">
-              <PhoneCall className="h-5 w-5" /> Book Strategy Call
-            </Link>
-          </div>
-        </section>
       </main>
-      <Footer />
+      <Footer initialCms={cms} />
     </>
   );
 }

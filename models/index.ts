@@ -5,12 +5,21 @@ export interface IListing extends Document {
   title: string;
   developer: string;
   developerLogo?: string;
+  developerBio?: string;
   location: string;
   priceRange: string;
   image?: string;
   images: string[];
   type: 'Nigeria' | 'UK';
   overview: string;
+  beds?: number;
+  rooms?: number;
+  amenity1?: string;
+  amenity2?: string;
+  amenity3?: string;
+  amenity4?: string;
+  amenity5?: string;
+  amenity6?: string;
   order: number;
   featured: boolean;
   createdAt: Date;
@@ -21,12 +30,21 @@ const ListingSchema: Schema = new Schema({
   title: { type: String, required: true },
   developer: { type: String, required: true },
   developerLogo: { type: String },
+  developerBio: { type: String, default: '' },
   location: { type: String, required: true },
   priceRange: { type: String, required: true },
   image: { type: String, default: '' },
   images: [{ type: String }],
   type: { type: String, enum: ['Nigeria', 'UK'], required: true },
   overview: { type: String, required: true },
+  beds: { type: Number },
+  rooms: { type: Number },
+  amenity1: { type: String, default: '' },
+  amenity2: { type: String, default: '' },
+  amenity3: { type: String, default: '' },
+  amenity4: { type: String, default: '' },
+  amenity5: { type: String, default: '' },
+  amenity6: { type: String, default: '' },
   order: { type: Number, default: 0 },
   featured: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
@@ -103,3 +121,23 @@ const AdminSchema: Schema = new Schema({
 });
 
 export const Admin: Model<IAdmin> = mongoose.models.Admin || mongoose.model<IAdmin>('Admin', AdminSchema);
+
+export interface ISiteContent extends Document {
+  key: string;
+  value: string;
+  type: 'text' | 'image' | 'icon';
+  section: string;
+  label: string;
+  updatedAt: Date;
+}
+
+const SiteContentSchema: Schema = new Schema({
+  key: { type: String, required: true, unique: true },
+  value: { type: String, required: true },
+  type: { type: String, enum: ['text', 'image', 'icon'], default: 'text' },
+  section: { type: String, required: true },
+  label: { type: String, required: true },
+  updatedAt: { type: Date, default: Date.now },
+});
+
+export const SiteContent: Model<ISiteContent> = mongoose.models.SiteContent || mongoose.model<ISiteContent>('SiteContent', SiteContentSchema);
