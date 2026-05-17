@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { ShieldCheck, TrendingUp, Handshake, CheckCircle2, ArrowRight, MapPin } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -44,13 +43,10 @@ export default async function Home() {
         {/* HERO SECTION */}
         <section className="relative min-h-[85vh] sm:h-[90vh] sm:min-h-[600px] flex items-center overflow-hidden">
           <div className="absolute inset-0 z-0">
-            <Image 
-              src={cms['home.hero.image'] || "https://images.pexels.com/photos/5725953/pexels-photo-5725953.jpeg"} 
+            <img 
+              src={cms['home.hero.image'] || "https://images.pexels.com/photos/37019091/pexels-photo-37019091.jpeg"} 
               alt="Luxury Real Estate" 
-              fill
-              className="object-cover"
-              priority
-              sizes="100vw"
+              className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-950/70 to-transparent"></div>
           </div>
