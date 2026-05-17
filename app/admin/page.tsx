@@ -1113,19 +1113,46 @@ export default function AdminDashboard() {
                 <form onSubmit={handleAddListing} className="p-8 space-y-6 overflow-y-auto">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="md:col-span-2">
-                      <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Property Hero Image</label>
-                      <div className="flex items-center gap-4">
-                        {newListing.image && <img src={newListing.image} className="w-16 h-16 rounded-lg object-cover border border-zinc-100" />}
-                        <input 
-                          type="file" 
+                      <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-2">Property Images (upload multiple — first is cover)</label>
+                      {(newListing.images || []).length > 0 && (
+                        <div className="flex flex-wrap gap-3 mb-3">
+                          {(newListing.images || []).map((img: string, idx: number) => (
+                            <div key={idx} className="relative group">
+                              <img src={img} className="w-20 h-20 rounded-xl object-cover border-2 border-zinc-100" />
+                              {idx === 0 && (
+                                <span className="absolute top-1 left-1 bg-brand-gold text-white text-[9px] font-bold px-1.5 py-0.5 rounded-md">Cover</span>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const imgs = [...(newListing.images || [])];
+                                  imgs.splice(idx, 1);
+                                  setNewListing({ ...newListing, images: imgs, image: imgs[0] || '' });
+                                }}
+                                className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity font-bold"
+                              >×</button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="file"
                           accept="image/*"
+                          multiple
                           className="text-xs text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-brand-emerald hover:file:bg-emerald-100 cursor-pointer"
                           onChange={async (e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
+                            const files = Array.from(e.target.files || []);
+                            if (files.length === 0) return;
+                            const existingImgs = newListing.images || [];
+                            const uploadedUrls: string[] = [];
+                            for (const file of files) {
                               const url = await uploadToCloudinary(file);
-                              if (url) setNewListing({...newListing, image: url, images: [url]});
+                              if (url) uploadedUrls.push(url);
                             }
+                            const allImgs = [...existingImgs, ...uploadedUrls];
+                            setNewListing({ ...newListing, images: allImgs, image: allImgs[0] || '' });
+                            e.target.value = '';
                           }}
                         />
                         {isUploading && <span className="text-[10px] text-brand-gold animate-pulse font-bold">Uploading...</span>}

@@ -44,7 +44,7 @@ export default async function Home() {
         <section className="relative min-h-[85vh] sm:h-[90vh] sm:min-h-[600px] flex items-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img 
-              src={cms['home.hero.image'] || "https://images.pexels.com/photos/37019091/pexels-photo-37019091.jpeg"} 
+              src={cms['home.hero.image'] || "https://images.pexels.com/photos/5725953/pexels-photo-5725953.jpeg"} 
               alt="Luxury Real Estate" 
               className="w-full h-full object-cover"
             />
@@ -277,7 +277,7 @@ export default async function Home() {
               
               <div className="relative">
                 <div className="aspect-square rounded-3xl overflow-hidden border-4 border-white/10">
-                  <img src="https://images.pexels.com/photos/8441826/pexels-photo-8441826.jpeg" alt="Consultation" className="w-full h-full object-cover" />
+                  <img src="https://images.pexels.com/photos/7641842/pexels-photo-7641842.jpeg" alt="Consultation" className="w-full h-full object-cover" />
                 </div>
                 <div className="absolute -bottom-6 -left-6 glass-card p-6 rounded-2xl max-w-xs border-brand-gold/30">
                   <p className="text-brand-emerald font-bold mb-1 italic">&quot;The safest way I&apos;ve found to buy back home while living in London.&quot;</p>

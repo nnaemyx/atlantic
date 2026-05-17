@@ -8,9 +8,9 @@ import { getAllCMS } from '@/lib/cms';
 import { AlertTriangle, CheckCircle, ShieldCheck } from 'lucide-react';
 
 const locations = [
-  { name: 'London', image: 'https://images.pexels.com/photos/10949172/pexels-photo-10949172.jpeg', description: 'Capital growth and global stability.' },
-  { name: 'Manchester', image: 'https://images.pexels.com/photos/28700676/pexels-photo-28700676.jpeg', description: 'High rental yields and regeneration.' },
-  { name: 'Birmingham', image: 'https://images.pexels.com/photos/31340447/pexels-photo-31340447.jpeg', description: 'Strategic growth and HS2 proximity.' }
+  { name: 'London', image: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg', description: 'Capital growth and global stability.' },
+  { name: 'Manchester', image: 'https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg', description: 'High rental yields and regeneration.' },
+  { name: 'Birmingham', image: 'https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg', description: 'Strategic growth and HS2 proximity.' }
 ];
 
 async function getUKListings() {

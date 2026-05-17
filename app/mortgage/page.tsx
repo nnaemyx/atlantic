@@ -32,7 +32,7 @@ export default async function MortgagePage() {
             </div>
           </div>
           <div className="absolute top-0 right-0 w-1/2 h-full hidden lg:block opacity-20">
-            <img src="https://images.pexels.com/photos/8293768/pexels-photo-8293768.jpeg" alt="Mortgage Office" className="w-full h-full object-cover" />
+            <img src="https://images.pexels.com/photos/7821579/pexels-photo-7821579.jpeg" alt="Mortgage Office" className="w-full h-full object-cover" />
           </div>
         </section>
 
@@ -80,7 +80,7 @@ export default async function MortgagePage() {
                 </div>
               </div>
               <div className="rounded-3xl overflow-hidden shadow-2xl h-[400px]">
-                <img src="https://images.pexels.com/photos/7979605/pexels-photo-7979605.jpeg" alt="Applying for mortgage" className="w-full h-full object-cover" />
+                <img src="https://images.pexels.com/photos/8942991/pexels-photo-8942991.jpeg" alt="Applying for mortgage" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
