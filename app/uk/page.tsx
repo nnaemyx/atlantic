@@ -144,7 +144,7 @@ export default async function UKProperty() {
               </div>
             </div>
             {ukListings.length > 0 ? (
-              <PropertyListView listings={ukListings} market="UK" />
+              <PropertyListView listings={ukListings} market="UK" hideDeveloperLink />
             ) : (
               <div className="py-20 text-center bg-brand-cream rounded-3xl border border-zinc-100">
                 <p className="text-zinc-500 font-medium">UK property listings will appear here once added via admin.</p>

@@ -202,10 +202,16 @@ export default function AdminDashboard() {
       const isEditing = !!editingListingId;
       const url = isEditing ? `/api/listings/${editingListingId}` : '/api/listings';
       const method = isEditing ? 'PUT' : 'POST';
+      
+      const payload = { ...newListing };
+      if (payload.type === 'UK' && !payload.developer) {
+        payload.developer = 'Atlantic UK';
+      }
+
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newListing)
+        body: JSON.stringify(payload)
       });
       const data = await res.json();
       if (res.ok) {
@@ -1136,10 +1142,12 @@ export default function AdminDashboard() {
                         <option value="UK">United Kingdom</option>
                       </select>
                     </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Developer</label>
-                      <input required type="text" className="w-full px-4 py-2.5 rounded-xl border border-zinc-200" value={newListing.developer} onChange={(e) => setNewListing({...newListing, developer: e.target.value})} />
-                    </div>
+                    {newListing.type !== 'UK' && (
+                      <div>
+                        <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Developer</label>
+                        <input required type="text" className="w-full px-4 py-2.5 rounded-xl border border-zinc-200" value={newListing.developer} onChange={(e) => setNewListing({...newListing, developer: e.target.value})} />
+                      </div>
+                    )}
                     <div>
                       <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Location</label>
                       <input required type="text" className="w-full px-4 py-2.5 rounded-xl border border-zinc-200" value={newListing.location} onChange={(e) => setNewListing({...newListing, location: e.target.value})} />
@@ -1160,10 +1168,12 @@ export default function AdminDashboard() {
                       <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">No. of Bathrooms</label>
                       <input type="number" className="w-full px-4 py-2.5 rounded-xl border border-zinc-200" value={newListing.rooms} onChange={(e) => setNewListing({...newListing, rooms: e.target.value})} />
                     </div>
-                    <div className="md:col-span-2">
-                      <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Developer Bio / Overview</label>
-                      <textarea rows={2} className="w-full px-4 py-2.5 rounded-xl border border-zinc-200" value={newListing.developerBio} onChange={(e) => setNewListing({...newListing, developerBio: e.target.value})} />
-                    </div>
+                    {newListing.type !== 'UK' && (
+                      <div className="md:col-span-2">
+                        <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Developer Bio / Overview</label>
+                        <textarea rows={2} className="w-full px-4 py-2.5 rounded-xl border border-zinc-200" value={newListing.developerBio} onChange={(e) => setNewListing({...newListing, developerBio: e.target.value})} />
+                      </div>
+                    )}
                     <div className="md:col-span-2 mt-2">
                       <h4 className="text-xs font-bold text-emerald-950 uppercase tracking-widest mb-3 border-b border-zinc-100 pb-2">Amenities (6 Slots)</h4>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
