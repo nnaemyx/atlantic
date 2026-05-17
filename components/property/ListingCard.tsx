@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import Link from 'next/link';
 import { MapPin, ChevronLeft, ChevronRight, BedDouble, Bath, ArrowRight, Building2, CheckCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -204,4 +204,4 @@ const ListingCard = ({ listing, hideDeveloperLink }: ListingCardProps) => {
   );
 };
 
-export default ListingCard;
+export default memo(ListingCard);

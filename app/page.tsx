@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { ShieldCheck, TrendingUp, Handshake, CheckCircle2, ArrowRight, MapPin } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -43,10 +44,13 @@ export default async function Home() {
         {/* HERO SECTION */}
         <section className="relative min-h-[85vh] sm:h-[90vh] sm:min-h-[600px] flex items-center overflow-hidden">
           <div className="absolute inset-0 z-0">
-            <img 
+            <Image 
               src={cms['home.hero.image'] || "https://images.pexels.com/photos/5725953/pexels-photo-5725953.jpeg"} 
               alt="Luxury Real Estate" 
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-950/70 to-transparent"></div>
           </div>
@@ -277,7 +281,7 @@ export default async function Home() {
               
               <div className="relative">
                 <div className="aspect-square rounded-3xl overflow-hidden border-4 border-white/10">
-                  <img src="https://images.pexels.com/photos/7641842/pexels-photo-7641842.jpeg" alt="Consultation" className="w-full h-full object-cover" />
+                  <Image src="https://images.pexels.com/photos/7641842/pexels-photo-7641842.jpeg" alt="Consultation" fill className="object-cover" sizes="(max-width:768px) 100vw, 50vw" />
                 </div>
                 <div className="absolute -bottom-6 -left-6 glass-card p-6 rounded-2xl max-w-xs border-brand-gold/30">
                   <p className="text-brand-emerald font-bold mb-1 italic">&quot;The safest way I&apos;ve found to buy back home while living in London.&quot;</p>

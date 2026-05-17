@@ -3,6 +3,7 @@ import Footer from '@/components/layout/Footer';
 import AccordionItem from '@/components/ui/AccordionItem';
 import { TrendingDown, Landmark, Calendar, Wallet, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getAllCMS } from '@/lib/cms';
 
 export default async function MortgagePage() {
@@ -32,7 +33,7 @@ export default async function MortgagePage() {
             </div>
           </div>
           <div className="absolute top-0 right-0 w-1/2 h-full hidden lg:block opacity-20">
-            <img src="https://images.pexels.com/photos/7821579/pexels-photo-7821579.jpeg" alt="Mortgage Office" className="w-full h-full object-cover" />
+            <Image src="https://images.pexels.com/photos/7821579/pexels-photo-7821579.jpeg" alt="Mortgage Office" fill className="object-cover" priority />
           </div>
         </section>
 
@@ -80,7 +81,7 @@ export default async function MortgagePage() {
                 </div>
               </div>
               <div className="rounded-3xl overflow-hidden shadow-2xl h-[400px]">
-                <img src="https://images.pexels.com/photos/8942991/pexels-photo-8942991.jpeg" alt="Applying for mortgage" className="w-full h-full object-cover" />
+                <Image src="https://images.pexels.com/photos/8942991/pexels-photo-8942991.jpeg" alt="Applying for mortgage" fill className="object-cover" />
               </div>
             </div>
           </div>

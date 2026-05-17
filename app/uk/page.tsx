@@ -2,6 +2,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import PropertyListView from '@/components/property/PropertyListView';
 import Link from 'next/link';
+import Image from 'next/image';
 import connectDB from '@/lib/db';
 import { Listing } from '@/models';
 import { getAllCMS } from '@/lib/cms';
@@ -121,7 +122,7 @@ export default async function UKProperty() {
                 {locations.map((loc) => (
                   <div key={loc.name} className="bg-white rounded-2xl overflow-hidden shadow-sm group flex-shrink-0 w-[72vw] sm:w-[55vw] md:w-auto snap-start">
                     <div className="h-44 sm:h-56 md:h-64 relative overflow-hidden">
-                      <img src={loc.image} alt={loc.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                      <Image src={loc.image} alt={loc.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" sizes="(max-width:768px) 72vw, 33vw" />
                     </div>
                     <div className="p-5 sm:p-8">
                       <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">{loc.name}</h3>
