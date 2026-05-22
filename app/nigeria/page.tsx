@@ -33,7 +33,7 @@ export default async function NigeriaProperties() {
     <>
       <Navbar />
       <main className="pt-24 pb-20">
-        <header className="bg-brand-emerald py-12 md:py-20 mb-12 md:mb-16 relative overflow-hidden">
+        <header className="bg-brand-emerald py-12 md:py-20 mb-8 md:mb-12 relative overflow-hidden">
           <div className="container mx-auto px-4 relative z-10 text-center">
             <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">{cms['nigeria.hero.title'] || 'Nigeria Properties'}</h1>
             <p className="text-emerald-100/70 max-w-2xl mx-auto text-base md:text-lg">
@@ -45,7 +45,13 @@ export default async function NigeriaProperties() {
 
         <section className="container mx-auto px-4 sm:px-6 lg:px-8">
           {listings.length > 0 ? (
-            <PropertyListView listings={listings} market="Nigeria" />
+            <>
+              <div className="text-center mb-2">
+                <span className="text-[10px] uppercase tracking-widest font-bold text-brand-gold">Exclusive Offers</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-10 text-zinc-800">Available Projects</h2>
+              <PropertyListView listings={listings} market="Nigeria" />
+            </>
           ) : (
             <div className="py-24 text-center">
               <div className="w-16 h-16 bg-zinc-50 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-zinc-100">
@@ -62,8 +68,9 @@ export default async function NigeriaProperties() {
           )}
 
           {/* Sourcing Section */}
-          <div className="mt-16 sm:mt-24 bg-brand-cream border border-zinc-100 rounded-2xl sm:rounded-3xl p-8 sm:p-12 text-center max-w-4xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Didn&apos;t find what you like?</h2>
+          <div className="mt-10 sm:mt-16 bg-brand-cream border border-zinc-100 rounded-2xl sm:rounded-3xl p-6 sm:p-10 text-center max-w-4xl mx-auto">
+            <span className="text-[10px] uppercase tracking-widest font-bold text-brand-gold block mb-2">Custom Request</span>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Didn&apos;t find what you like?</h2>
             <p className="text-zinc-600 text-base sm:text-lg mb-6 sm:mb-8">
               Our network covers over 50+ developers in Nigeria. We can source the ideal property
               based on your specific budget, location, and property type.

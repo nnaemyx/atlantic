@@ -33,14 +33,17 @@ export default async function MortgagePage() {
             </div>
           </div>
           <div className="absolute top-0 right-0 w-1/2 h-full hidden lg:block opacity-20">
-            <Image src="https://images.pexels.com/photos/7821579/pexels-photo-7821579.jpeg" alt="Mortgage Office" fill className="object-cover" priority />
+            <Image src="https://images.pexels.com/photos/6863332/pexels-photo-6863332.jpeg" alt="Mortgage Office" fill className="object-cover" priority />
           </div>
         </section>
 
         {/* TERMS GRID */}
-        <section className="py-16 sm:py-24 bg-brand-cream">
+        <section className="py-10 sm:py-14 bg-brand-cream mt-8 sm:mt-12">
           <div className="container mx-auto px-4">
-            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-16">{cms['mortgage.terms.title'] || 'MREIF Home Loan Key Terms'}</h2>
+            <div className="text-center mb-2">
+              <span className="text-[10px] uppercase tracking-widest font-bold text-brand-gold">Key Features</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-10">{cms['mortgage.terms.title'] || 'MREIF Home Loan Key Terms'}</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8">
               {mortgageTerms.map((term) => (
                 <div key={term.label} className="bg-white p-8 rounded-2xl shadow-sm border border-zinc-50 text-center">
@@ -56,11 +59,12 @@ export default async function MortgagePage() {
         </section>
 
         {/* ELIGIBILITY LIST */}
-        <section className="py-16 sm:py-24 bg-white">
+        <section className="py-10 sm:py-14 bg-white">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 items-center">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">{cms['mortgage.eligibility.title'] || 'Who Can Apply?'}</h2>
+                <span className="text-[10px] uppercase tracking-widest font-bold text-brand-gold block mb-2">Qualifications</span>
+                <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">{cms['mortgage.eligibility.title'] || 'Who Can Apply?'}</h2>
                 <div className="space-y-6">
                   <div className="flex gap-4">
                     <CheckCircle2 className="h-6 w-6 text-brand-emerald flex-shrink-0" />
@@ -80,17 +84,20 @@ export default async function MortgagePage() {
                   </div>
                 </div>
               </div>
-              <div className="rounded-3xl overflow-hidden shadow-2xl h-[400px]">
-                <Image src="https://images.pexels.com/photos/8942991/pexels-photo-8942991.jpeg" alt="Applying for mortgage" fill className="object-cover" />
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl h-[400px]">
+                <Image src="https://images.pexels.com/photos/5699479/pexels-photo-5699479.jpeg" alt="Applying for mortgage" fill className="object-cover" />
               </div>
             </div>
           </div>
         </section>
 
         {/* FAQ ACCORDION */}
-        <section className="py-24 bg-zinc-50 border-t border-zinc-100">
+        <section className="py-12 md:py-16 bg-zinc-50 border-t border-zinc-100">
           <div className="container mx-auto px-4 max-w-4xl">
-            <h2 className="text-3xl font-bold text-center mb-16">{cms['mortgage.faq.title'] || 'Mortgage Frequently Asked Questions'}</h2>
+            <div className="text-center mb-2">
+              <span className="text-[10px] uppercase tracking-widest font-bold text-brand-gold">FAQ</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-10">{cms['mortgage.faq.title'] || 'Mortgage Frequently Asked Questions'}</h2>
             <div className="bg-white rounded-3xl p-8 shadow-sm border border-zinc-100">
               {Array.from({ length: 10 }).map((_, i) => {
                 const num = i + 1;

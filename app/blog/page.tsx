@@ -23,7 +23,7 @@ export default async function BlogListing() {
     <>
       <Navbar />
       <main className="pt-24 pb-20">
-        <header className="bg-brand-emerald py-24 mb-16 relative overflow-hidden">
+        <header className="bg-brand-emerald py-16 sm:py-20 mb-10 md:mb-12 relative overflow-hidden">
           <div className="container mx-auto px-4 text-center relative z-10">
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 font-heading">{cms['blog.hero.title'] || 'Investment Insights'}</h1>
             <p className="text-emerald-100/70 max-w-2xl mx-auto text-lg leading-relaxed">

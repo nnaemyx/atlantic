@@ -63,11 +63,16 @@ const Footer = ({ initialCms = {} }: { initialCms?: Record<string, string> }) =>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-6">
-            <Link href="/" className="flex items-center gap-2">
-              <ShieldCheck className="h-8 w-8 text-brand-gold" />
-              <span className="font-heading text-xl font-bold text-white tracking-tight">
-                {cms['global.company.name'] ? cms['global.company.name'].split(' ')[0] : 'ATLANTIC'} <span className="text-brand-gold">{cms['global.company.name'] ? cms['global.company.name'].split(' ').slice(1).join(' ') : 'PROPERTY'}</span>
-              </span>
+            <Link href="/" className="flex items-center gap-2.5">
+              <ShieldCheck className="h-7 w-7 text-brand-gold" />
+              <div className="flex flex-col leading-none">
+                <span className="font-heading text-lg font-bold text-white tracking-tight">
+                  My Property <span className="text-brand-gold">Centre</span>
+                </span>
+                <span className="text-[9px] text-emerald-200/50 tracking-wide font-medium">
+                  by Atlantic Property Partners
+                </span>
+              </div>
             </Link>
             <p className="text-emerald-200/80 text-sm leading-relaxed">
               {cms['global.company.tagline'] || 'Premium property advisory for Nigerians at home and in the diaspora. Verified developers, transparent projects, and secure investment paths.'}
@@ -118,9 +123,12 @@ const Footer = ({ initialCms = {} }: { initialCms?: Record<string, string> }) =>
         </div>
         
         <div className="border-t border-emerald-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-emerald-200/40">
-          <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-brand-gold transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-brand-gold transition-colors">Terms of Service</Link>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-center sm:text-left">
+            <span className="text-emerald-200/70 font-semibold tracking-wide">
+              mypropertycentre.com
+            </span>
+            <span className="hidden sm:inline text-emerald-200/30">|</span>
+            <span>powered by {cms['global.company.name'] || 'Atlantic Property Partners'}</span>
           </div>
           <div className="flex gap-5 items-center">
             {cms['global.social.tiktok'] && (

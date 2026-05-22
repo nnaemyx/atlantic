@@ -163,12 +163,12 @@ const ListingCard = ({ listing, hideDeveloperLink }: ListingCardProps) => {
             <div className="flex items-center gap-3 mb-3">
               <span className="flex items-center gap-1 text-zinc-500 text-xs font-semibold">
                 <BedDouble className="h-3.5 w-3.5 text-brand-emerald" />
-                {listing.bedrooms ?? 'N/A'} Bd
+                {listing.bedrooms ?? 'N/A'} Beds
               </span>
               <span className="text-zinc-200">|</span>
               <span className="flex items-center gap-1 text-zinc-500 text-xs font-semibold">
                 <Bath className="h-3.5 w-3.5 text-brand-emerald" />
-                {listing.bathrooms ?? 'N/A'} Ba
+                {listing.bathrooms ?? 'N/A'} Baths
               </span>
             </div>
 

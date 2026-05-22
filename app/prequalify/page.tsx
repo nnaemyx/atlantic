@@ -371,7 +371,7 @@ function PrequalifyForm({ initialCms }: { initialCms: Record<string, string> }) 
                           <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-100 flex items-start gap-3 mt-8">
                             <input type="checkbox" id="feeAcceptance" className="mt-1" checked={formData.feeAcceptance} onChange={(e) => updateFormData({ feeAcceptance: e.target.checked })} />
                             <label htmlFor="feeAcceptance" className="text-sm text-emerald-900 leading-relaxed cursor-pointer">
-                              {cms['prequalify.fee.notice'] || 'I understand that Atlantic Property charges a sourcing/consultancy fee for finding and securing UK properties, payable upon successful engagement.'}
+                              {cms['prequalify.fee.notice'] || 'I understand that My Property Centre charges a sourcing/consultancy fee for finding and securing UK properties, payable upon successful engagement.'}
                             </label>
                           </div>
                         </div>
