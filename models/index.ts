@@ -106,6 +106,30 @@ const BlogPostSchema: Schema = new Schema({
 
 export const BlogPost: Model<IBlogPost> = mongoose.models.BlogPost || mongoose.model<IBlogPost>('BlogPost', BlogPostSchema);
 
+export interface IDeveloper extends Document {
+  name: string;
+  nameKey: string;
+  logo?: string;
+  bio?: string;
+  units?: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const DeveloperSchema: Schema = new Schema(
+  {
+    name: { type: String, required: true, trim: true },
+    nameKey: { type: String, required: true, unique: true, trim: true },
+    logo: { type: String, default: '' },
+    bio: { type: String, default: '' },
+    units: { type: Number, default: 0 },
+  },
+  { timestamps: true }
+);
+
+export const Developer: Model<IDeveloper> =
+  mongoose.models.Developer || mongoose.model<IDeveloper>('Developer', DeveloperSchema);
+
 export interface IAdmin extends Document {
   email: string;
   passwordHash: string;

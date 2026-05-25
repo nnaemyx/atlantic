@@ -2,35 +2,42 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import PropertyListView from '@/components/property/PropertyListView';
 import connectDB from '@/lib/db';
-import { Listing } from '@/models';
+import { getDeveloperKey, getDeveloperNameRegex, normalizeDeveloperName } from '@/lib/developers';
+import { Developer, Listing } from '@/models';
 import Link from 'next/link';
 import { Building2, ArrowLeft, MapPin, Home, Star, BadgeCheck, Phone } from 'lucide-react';
 
-async function getDeveloperProperties(developerName: string) {
+async function getDeveloperData(developerName: string) {
   try {
     await connectDB();
-    const decodedName = decodeURIComponent(developerName).trim();
-    const developerRegex = new RegExp(`^${decodedName}$`, 'i');
-    const listings = await Listing.find({ developer: developerRegex, type: 'Nigeria' })
-      .sort({ order: 1, createdAt: -1 })
-      .lean();
-    return listings.map((l: any) => ({
-      ...l,
-      _id: l._id?.toString(),
-      createdAt: l.createdAt?.toString(),
-      updatedAt: l.updatedAt?.toString(),
-    }));
+    const decodedName = normalizeDeveloperName(decodeURIComponent(developerName));
+    const developerRegex = getDeveloperNameRegex(decodedName);
+
+    const [listings, developer] = await Promise.all([
+      Listing.find({ developer: developerRegex, type: 'Nigeria' }).sort({ order: 1, createdAt: -1 }).lean(),
+      Developer.findOne({ nameKey: getDeveloperKey(decodedName) }).lean(),
+    ]);
+
+    return {
+      developer,
+      listings: listings.map((listing: any) => ({
+        ...listing,
+        _id: listing._id?.toString(),
+        createdAt: listing.createdAt?.toString(),
+        updatedAt: listing.updatedAt?.toString(),
+      })),
+    };
   } catch (error) {
     console.error('Failed to fetch developer properties:', error);
-    return [];
+    return { developer: null, listings: [] };
   }
 }
 
 export const dynamic = 'force-dynamic';
 
-export default async function DeveloperPage({ params }: { params: { developer: string } }) {
+export default async function DeveloperPage({ params }: { params: Promise<{ developer: string }> }) {
   const resolvedParams = await params;
-  const listings = await getDeveloperProperties(resolvedParams.developer);
+  const { developer, listings } = await getDeveloperData(resolvedParams.developer);
 
   if (listings.length === 0) {
     return (
@@ -49,8 +56,13 @@ export default async function DeveloperPage({ params }: { params: { developer: s
     );
   }
 
-  const developerName = decodeURIComponent(resolvedParams.developer);
-  const bio = listings.find((l: any) => l.developerBio)?.developerBio || 'A trusted developer on the Atlantic Property platform.';
+  const developerName =
+    developer?.name || normalizeDeveloperName(decodeURIComponent(resolvedParams.developer));
+  const bio =
+    developer?.bio ||
+    listings.find((listing: any) => listing.developerBio)?.developerBio ||
+    'A trusted developer on the Atlantic Property platform.';
+  const totalUnits = developer?.units ?? listings.length;
 
   // Aggregate unique amenities from all properties
   const allAmenities = new Set<string>();
@@ -63,8 +75,6 @@ export default async function DeveloperPage({ params }: { params: { developer: s
 
   // Aggregate unique locations
   const locations = [...new Set(listings.map((l: any) => l.location).filter(Boolean))];
-
-  const totalBedrooms = listings.reduce((acc: number, l: any) => acc + (l.beds || 0), 0);
 
   return (
     <>
@@ -91,7 +101,15 @@ export default async function DeveloperPage({ params }: { params: { developer: s
               {/* Logo / Avatar */}
               <div className="relative flex-shrink-0">
                 <div className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-gradient-to-br from-emerald-800 to-emerald-950 rounded-2xl sm:rounded-3xl flex items-center justify-center border-2 border-brand-gold/40 shadow-2xl shadow-black/40">
-                  <Building2 className="h-10 w-10 sm:h-14 sm:w-14 md:h-16 md:w-16 text-brand-gold" />
+                  {developer?.logo ? (
+                    <img
+                      src={developer.logo}
+                      alt={developerName}
+                      className="w-full h-full object-contain rounded-2xl sm:rounded-3xl bg-white p-3 sm:p-4"
+                    />
+                  ) : (
+                    <Building2 className="h-10 w-10 sm:h-14 sm:w-14 md:h-16 md:w-16 text-brand-gold" />
+                  )}
                 </div>
                 <div className="absolute -bottom-2 -right-2 bg-brand-gold rounded-xl px-2 py-1 flex items-center gap-1">
                   <BadgeCheck className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-emerald-950" />
@@ -116,12 +134,10 @@ export default async function DeveloperPage({ params }: { params: { developer: s
                       <span><strong className="text-white font-bold">{locations[0]}{locations.length > 1 ? ` + ${locations.length - 1} more` : ''}</strong></span>
                     </div>
                   )}
-                  {totalBedrooms > 0 && (
-                    <div className="flex items-center gap-2 text-emerald-100/70 text-sm">
-                      <Star className="h-4 w-4 text-brand-gold" />
-                      <span><strong className="text-white font-bold">{totalBedrooms}+ Bedrooms</strong> available</span>
-                    </div>
-                  )}
+                  <div className="flex items-center gap-2 text-emerald-100/70 text-sm">
+                    <Star className="h-4 w-4 text-brand-gold" />
+                    <span><strong className="text-white font-bold">{totalUnits}</strong> Units</span>
+                  </div>
                 </div>
               </div>
 
@@ -182,12 +198,10 @@ export default async function DeveloperPage({ params }: { params: { developer: s
                       <span className="text-emerald-100/60 text-sm">Active Listings</span>
                       <span className="font-black text-2xl text-brand-gold">{listings.length}</span>
                     </div>
-                    {totalBedrooms > 0 && (
-                      <div className="flex items-center justify-between border-t border-emerald-900 pt-4">
-                        <span className="text-emerald-100/60 text-sm">Total Bedrooms</span>
-                        <span className="font-black text-2xl text-brand-gold">{totalBedrooms}+</span>
-                      </div>
-                    )}
+                    <div className="flex items-center justify-between border-t border-emerald-900 pt-4">
+                      <span className="text-emerald-100/60 text-sm">Total Units</span>
+                      <span className="font-black text-2xl text-brand-gold">{totalUnits}</span>
+                    </div>
                     <div className="flex items-center justify-between border-t border-emerald-900 pt-4">
                       <span className="text-emerald-100/60 text-sm">Locations</span>
                       <span className="font-black text-2xl text-brand-gold">{locations.length || 1}</span>

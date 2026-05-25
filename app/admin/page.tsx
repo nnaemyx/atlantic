@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import DeveloperAdminPanel from '@/components/admin/DeveloperAdminPanel';
 
 // Dynamically import ReactQuill for SSR compatibility with ref forwarding
 const ReactQuill = dynamic(
@@ -46,18 +47,20 @@ export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'leads' | 'listings' | 'blog' | 'content' | 'settings'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'leads' | 'listings' | 'developers' | 'blog' | 'content' | 'settings'>('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   const [stats, setStats] = useState<any>(null);
   const [leads, setLeads] = useState<any[]>([]);
   const [listings, setListings] = useState<any[]>([]);
+  const [developers, setDevelopers] = useState<any[]>([]);
   const [blogPosts, setBlogPosts] = useState<any[]>([]);
   const [siteContent, setSiteContent] = useState<any[]>([]);
   const [pageContent, setPageContent] = useState<Record<string, string>>({});
   const [pageContentSaving, setPageContentSaving] = useState<Record<string, boolean>>({});
   const [activePage, setActivePage] = useState('home');
   const [isLoading, setIsLoading] = useState(false);
+  const [isDevelopersLoading, setIsDevelopersLoading] = useState(false);
   const [showModal, setShowModal] = useState<'listing' | 'blog' | 'content' | null>(null);
   const [editingListingId, setEditingListingId] = useState<string | null>(null);
   const [selectedLead, setSelectedLead] = useState<any>(null);
@@ -65,7 +68,7 @@ export default function AdminDashboard() {
   const [isUploading, setIsUploading] = useState(false);
   
   const blankListing = {
-    title: '', developer: '', developerBio: '', location: '', priceRange: '',
+    title: '', developer: '', developerLogo: '', developerBio: '', developerUnits: '', location: '', priceRange: '',
     image: '',
     images: [] as string[],
     type: 'Nigeria', overview: '', order: 0, featured: true,
@@ -153,6 +156,12 @@ export default function AdminDashboard() {
     }
   }, [isAuthenticated, activeTab]);
 
+  useEffect(() => {
+    if (isAuthenticated && (activeTab === 'listings' || activeTab === 'developers')) {
+      fetchDevelopers();
+    }
+  }, [isAuthenticated, activeTab]);
+
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -160,6 +169,9 @@ export default function AdminDashboard() {
       if (activeTab === 'dashboard') endpoint = '/api/admin/stats';
       else if (activeTab === 'leads') endpoint = '/api/leads';
       else if (activeTab === 'listings') endpoint = '/api/listings';
+      else if (activeTab === 'developers') {
+        return;
+      }
       else if (activeTab === 'blog') endpoint = '/api/blog';
       else if (activeTab === 'settings' || activeTab === 'content') endpoint = '/api/site-content';
       
@@ -190,6 +202,24 @@ export default function AdminDashboard() {
     }
   };
 
+  const fetchDevelopers = async () => {
+    setIsDevelopersLoading(true);
+    try {
+      const res = await fetch('/api/developers', { cache: 'no-store' });
+      const data = await res.json();
+      setDevelopers(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error('Fetch developers error:', error);
+      setDevelopers([]);
+    } finally {
+      setIsDevelopersLoading(false);
+    }
+  };
+
+  const getDeveloperDetails = (developerName: string) => {
+    return developers.find((developer: any) => developer.name === developerName);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('admin_auth');
     setIsAuthenticated(false);
@@ -203,9 +233,11 @@ export default function AdminDashboard() {
       const url = isEditing ? `/api/listings/${editingListingId}` : '/api/listings';
       const method = isEditing ? 'PUT' : 'POST';
       
-      const payload = { ...newListing };
-      if (payload.type === 'UK' && !payload.developer) {
+      const { developerUnits, ...payload } = { ...newListing };
+      if (payload.type === 'UK') {
         payload.developer = 'Atlantic UK';
+        payload.developerBio = '';
+        payload.developerLogo = '';
       }
 
       const res = await fetch(url, {
@@ -398,6 +430,9 @@ export default function AdminDashboard() {
           <button onClick={() => { setActiveTab('listings'); setIsSidebarOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === 'listings' ? 'bg-white/10 text-brand-gold' : 'text-emerald-100/60 hover:bg-white/5'}`}>
             <LayoutDashboard className="h-4 w-4" /> Properties
           </button>
+          <button onClick={() => { setActiveTab('developers'); setIsSidebarOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === 'developers' ? 'bg-white/10 text-brand-gold' : 'text-emerald-100/60 hover:bg-white/5'}`}>
+            <Building2 className="h-4 w-4" /> Developers
+          </button>
           <button onClick={() => { setActiveTab('blog'); setIsSidebarOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === 'blog' ? 'bg-white/10 text-brand-gold' : 'text-emerald-100/60 hover:bg-white/5'}`}>
             <FileText className="h-4 w-4" /> Blog CMS
           </button>
@@ -419,15 +454,19 @@ export default function AdminDashboard() {
         <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-10 gap-6">
           <div>
             <h2 className="text-2xl md:text-3xl font-bold text-emerald-950 font-heading">
-            {activeTab === 'dashboard' ? 'Business Overview' : activeTab === 'leads' ? 'Lead Pipeline' : activeTab === 'listings' ? 'Property Inventory' : activeTab === 'content' ? 'Page Content Editor' : activeTab === 'settings' ? 'Site Settings' : 'Content Management'}
+            {activeTab === 'dashboard' ? 'Business Overview' : activeTab === 'leads' ? 'Lead Pipeline' : activeTab === 'listings' ? 'Property Inventory' : activeTab === 'developers' ? 'Developer Directory' : activeTab === 'content' ? 'Page Content Editor' : activeTab === 'settings' ? 'Site Settings' : 'Content Management'}
             </h2>
             <p className="text-zinc-500 text-sm mt-1">Real-time performance and control.</p>
           </div>
           
-          {activeTab !== 'dashboard' && activeTab !== 'leads' && activeTab !== 'content' && (
+          {(activeTab === 'listings' || activeTab === 'blog') && (
             <button 
               onClick={() => {
                 if(activeTab === 'blog') setNewPost({ title: '', content: '', excerpt: '', category: 'Investment', coverImage: '', published: true });
+                if(activeTab === 'listings') {
+                  setEditingListingId(null);
+                  setNewListing(blankListing);
+                }
                 setShowModal(activeTab === 'listings' ? 'listing' : 'blog');
               }}
               className="btn-primary flex items-center justify-center gap-2 py-3 px-6 text-sm shadow-xl shadow-emerald-950/10"
@@ -436,6 +475,13 @@ export default function AdminDashboard() {
             </button>
           )}
         </header>
+
+        {activeTab === 'developers' && (
+          <DeveloperAdminPanel
+            uploadToCloudinary={uploadToCloudinary}
+            isUploading={isUploading}
+          />
+        )}
 
         {activeTab === 'dashboard' && stats && (
           <div className="space-y-8">
@@ -1003,7 +1049,14 @@ export default function AdminDashboard() {
                           className="p-2 hover:bg-zinc-100 rounded-xl text-zinc-400 hover:text-emerald-600 transition-all"
                           title="Edit listing"
                           onClick={() => {
-                            setNewListing({ ...blankListing, ...listing });
+                            const matchedDeveloper = developers.find((developer: any) => developer.name === listing.developer);
+                            setNewListing({
+                              ...blankListing,
+                              ...listing,
+                              developerLogo: matchedDeveloper?.logo || listing.developerLogo || '',
+                              developerBio: matchedDeveloper?.bio || listing.developerBio || '',
+                              developerUnits: matchedDeveloper?.units?.toString() || '',
+                            });
                             setEditingListingId(listing._id);
                             setShowModal('listing');
                           }}
@@ -1164,7 +1217,21 @@ export default function AdminDashboard() {
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Market Type</label>
-                      <select className="w-full px-4 py-2.5 rounded-xl border border-zinc-200" value={newListing.type} onChange={(e) => setNewListing({...newListing, type: e.target.value as any})}>
+                      <select
+                        className="w-full px-4 py-2.5 rounded-xl border border-zinc-200"
+                        value={newListing.type}
+                        onChange={(e) => {
+                          const nextType = e.target.value as any;
+                          setNewListing({
+                            ...newListing,
+                            type: nextType,
+                            developer: nextType === 'UK' ? 'Atlantic UK' : '',
+                            developerLogo: '',
+                            developerBio: '',
+                            developerUnits: '',
+                          });
+                        }}
+                      >
                         <option value="Nigeria">Nigeria</option>
                         <option value="UK">United Kingdom</option>
                       </select>
@@ -1172,7 +1239,49 @@ export default function AdminDashboard() {
                     {newListing.type !== 'UK' && (
                       <div>
                         <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Developer</label>
-                        <input required type="text" className="w-full px-4 py-2.5 rounded-xl border border-zinc-200" value={newListing.developer} onChange={(e) => setNewListing({...newListing, developer: e.target.value})} />
+                        <select
+                          required
+                          className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-white"
+                          value={newListing.developer}
+                          onChange={(e) => {
+                            const developerName = e.target.value;
+                            const matchedDeveloper = getDeveloperDetails(developerName);
+                            setNewListing({
+                              ...newListing,
+                              developer: developerName,
+                              developerLogo: matchedDeveloper?.logo || '',
+                              developerBio: matchedDeveloper?.bio || '',
+                              developerUnits: matchedDeveloper?.units?.toString() || '',
+                            });
+                          }}
+                        >
+                          <option value="">{isDevelopersLoading ? 'Loading developers...' : 'Select developer'}</option>
+                          {newListing.developer && !developers.some((developer: any) => developer.name === newListing.developer) && (
+                            <option value={newListing.developer}>{newListing.developer}</option>
+                          )}
+                          {developers.map((developer: any) => (
+                            <option key={developer._id} value={developer.name}>
+                              {developer.name}
+                            </option>
+                          ))}
+                        </select>
+                        {developers.length === 0 && !isDevelopersLoading && (
+                          <p className="text-[11px] text-zinc-400 mt-2">
+                            No developers found yet. Add developers in the Developers tab first.
+                          </p>
+                        )}
+                      </div>
+                    )}
+                    {newListing.type !== 'UK' && (
+                      <div>
+                        <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Developer Units</label>
+                        <input
+                          readOnly
+                          type="text"
+                          className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-600"
+                          value={newListing.developerUnits || ''}
+                          placeholder={newListing.developer ? 'No units added for this developer' : 'Select developer first'}
+                        />
                       </div>
                     )}
                     <div>
@@ -1196,9 +1305,26 @@ export default function AdminDashboard() {
                       <input type="number" className="w-full px-4 py-2.5 rounded-xl border border-zinc-200" value={newListing.rooms} onChange={(e) => setNewListing({...newListing, rooms: e.target.value})} />
                     </div>
                     {newListing.type !== 'UK' && (
-                      <div className="md:col-span-2">
-                        <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Developer Bio / Overview</label>
-                        <textarea rows={2} className="w-full px-4 py-2.5 rounded-xl border border-zinc-200" value={newListing.developerBio} onChange={(e) => setNewListing({...newListing, developerBio: e.target.value})} />
+                      <div className="md:col-span-2 rounded-2xl border border-zinc-100 bg-zinc-50 p-4 sm:p-5">
+                        <div className="flex flex-col sm:flex-row gap-4">
+                          <div className="w-20 h-20 rounded-2xl border border-zinc-100 bg-white flex items-center justify-center overflow-hidden flex-shrink-0">
+                            {newListing.developerLogo ? (
+                              <img src={newListing.developerLogo} alt={newListing.developer || 'Developer logo'} className="w-full h-full object-contain" />
+                            ) : (
+                              <Building2 className="h-8 w-8 text-zinc-300" />
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <label className="block text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5">Developer Overview</label>
+                            <textarea
+                              rows={4}
+                              readOnly
+                              className="w-full px-4 py-3 rounded-xl border border-zinc-200 bg-white text-zinc-600"
+                              value={newListing.developerBio || ''}
+                              placeholder={newListing.developer ? 'No overview added for this developer yet.' : 'Select a developer to fetch logo, units, and overview.'}
+                            />
+                          </div>
+                        </div>
                       </div>
                     )}
                     <div className="md:col-span-2 mt-2">
