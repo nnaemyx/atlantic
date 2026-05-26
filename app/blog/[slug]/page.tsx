@@ -29,45 +29,52 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <ChevronLeft className="h-4 w-4" /> Back to Insights
           </Link>
 
-          <header className="mb-10 sm:mb-12 lg:mb-14">
-            <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs font-bold text-brand-gold mb-4 uppercase tracking-widest">
-              <span>{post.category}</span>
-              <span className="text-zinc-200">&middot;</span>
-              <span className="flex items-center gap-1">
-                <Calendar className="h-3 w-3" /> {new Date(post.createdAt).toLocaleDateString()}
+          <header className="max-w-[46rem] mx-auto mb-10 sm:mb-12 lg:mb-14">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-[11px] font-bold text-brand-gold mb-5 uppercase tracking-[0.24em]">
+              <span className="rounded-full bg-brand-gold/10 px-3 py-1.5">{post.category}</span>
+              <span className="flex items-center gap-1.5 text-zinc-400">
+                <Calendar className="h-3.5 w-3.5 text-brand-gold" />
+                {new Date(post.createdAt).toLocaleDateString('en-GB', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                })}
               </span>
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-5 sm:mb-6 leading-[1.05] break-words">
+
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-5 sm:mb-6 leading-[1.08] tracking-tight">
               {post.title}
             </h1>
-            <p className="text-lg sm:text-xl text-zinc-500 leading-relaxed max-w-3xl mb-6 sm:mb-8 break-words">
+            <p className="text-lg sm:text-xl text-zinc-500 leading-[1.75] max-w-3xl mb-8">
               {post.excerpt}
             </p>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-brand-emerald">
+
+            <div className="flex items-center gap-3 pt-6 border-t border-zinc-200">
+              <div className="w-11 h-11 rounded-full bg-emerald-50 flex items-center justify-center text-brand-emerald">
                 <User className="h-5 w-5" />
               </div>
               <div>
                 <p className="text-sm font-bold text-zinc-900">{post.author}</p>
-                <p className="text-xs text-zinc-400">Senior Property Advisor</p>
+                <p className="text-xs text-zinc-400 uppercase tracking-[0.18em]">Senior Property Advisor</p>
               </div>
             </div>
           </header>
 
-          <div className="aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9] rounded-3xl overflow-hidden mb-10 sm:mb-12 border border-zinc-100 shadow-xl">
-            <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover" />
+          <div className="max-w-5xl mx-auto mb-10 sm:mb-12 lg:mb-14">
+            <div className="aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9] rounded-[1.75rem] overflow-hidden border border-zinc-100 shadow-xl shadow-zinc-950/5">
+              <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover" />
+            </div>
           </div>
 
-          <div
-            className="prose prose-sm sm:prose-base lg:prose-lg prose-emerald max-w-none overflow-hidden break-words prose-headings:font-heading prose-headings:text-brand-emerald prose-headings:break-words prose-p:text-zinc-600 prose-p:leading-relaxed prose-p:break-words prose-li:break-words prose-strong:break-words prose-a:break-all prose-img:max-w-full prose-img:rounded-2xl prose-pre:overflow-x-auto prose-code:break-words"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+          <div className="max-w-[46rem] mx-auto">
+            <div className="article-richtext" dangerouslySetInnerHTML={{ __html: post.content }} />
+          </div>
 
           <div className="mt-12 sm:mt-16 pt-12 sm:pt-16 border-t border-zinc-100">
-            <div className="bg-brand-cream p-6 sm:p-10 rounded-3xl border border-zinc-100 flex flex-col lg:flex-row lg:items-center justify-between gap-6 sm:gap-8">
+            <div className="rounded-3xl border border-zinc-200/80 px-6 py-6 sm:px-10 sm:py-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6 sm:gap-8">
               <div className="max-w-md">
                 <h3 className="text-2xl font-bold mb-2">Ready to take the next step?</h3>
-                <p className="text-zinc-600">
+                <p className="text-zinc-600 leading-relaxed">
                   Our experts are ready to help you navigate the investment landscape safely.
                 </p>
               </div>

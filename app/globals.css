@@ -68,4 +68,284 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  .article-richtext {
+    color: rgb(82 82 91);
+    font-size: clamp(1.0625rem, 1rem + 0.28vw, 1.15rem);
+    line-height: 1.9;
+    text-align: left;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .article-richtext * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .article-richtext > * + * {
+    margin-top: 1.25rem;
+  }
+
+  /* ── Headings ── */
+
+  .article-richtext h1,
+  .article-richtext h2,
+  .article-richtext h3,
+  .article-richtext h4,
+  .article-richtext h5,
+  .article-richtext h6 {
+    color: var(--color-brand-emerald);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+
+  .article-richtext h1 {
+    font-size: clamp(2rem, 1.75rem + 1.1vw, 2.75rem);
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .article-richtext h2 {
+    font-size: clamp(1.625rem, 1.45rem + 0.8vw, 2.15rem);
+    margin-top: 2.75rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .article-richtext h3 {
+    font-size: clamp(1.3rem, 1.18rem + 0.55vw, 1.7rem);
+    margin-top: 2.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .article-richtext h4,
+  .article-richtext h5,
+  .article-richtext h6 {
+    font-size: clamp(1.1rem, 1.02rem + 0.32vw, 1.3rem);
+    margin-top: 2rem;
+    margin-bottom: 0.625rem;
+  }
+
+  /* ── Paragraphs ── */
+
+  .article-richtext p {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .article-richtext p + p {
+    margin-top: 1.15rem;
+  }
+
+  /* ── Heading-to-paragraph & paragraph-to-heading spacing ── */
+
+  .article-richtext p + h1,
+  .article-richtext p + h2,
+  .article-richtext ul + h1,
+  .article-richtext ul + h2,
+  .article-richtext ol + h1,
+  .article-richtext ol + h2,
+  .article-richtext blockquote + h1,
+  .article-richtext blockquote + h2 {
+    margin-top: 3rem;
+  }
+
+  .article-richtext p + h3,
+  .article-richtext p + h4,
+  .article-richtext ul + h3,
+  .article-richtext ul + h4,
+  .article-richtext ol + h3,
+  .article-richtext ol + h4,
+  .article-richtext blockquote + h3,
+  .article-richtext blockquote + h4 {
+    margin-top: 2.5rem;
+  }
+
+  .article-richtext h1 + p,
+  .article-richtext h2 + p {
+    margin-top: 0.625rem;
+  }
+
+  .article-richtext h3 + p,
+  .article-richtext h4 + p,
+  .article-richtext h5 + p,
+  .article-richtext h6 + p {
+    margin-top: 0.5rem;
+  }
+
+  /* ── Lists ── */
+
+  .article-richtext ul,
+  .article-richtext ol {
+    margin-top: 1.25rem;
+    margin-bottom: 1.5rem;
+    padding-left: 1.75rem;
+  }
+
+  .article-richtext ul {
+    list-style-type: disc;
+  }
+
+  .article-richtext ol {
+    list-style-type: decimal;
+  }
+
+  .article-richtext li {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    padding-left: 0.25rem;
+  }
+
+  .article-richtext li + li {
+    margin-top: 0.6rem;
+  }
+
+  .article-richtext li > ul,
+  .article-richtext li > ol {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── Inline styles ── */
+
+  .article-richtext strong {
+    color: rgb(24 24 27);
+    font-weight: 700;
+  }
+
+  .article-richtext a {
+    color: var(--color-brand-emerald);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.22em;
+    overflow-wrap: anywhere;
+    word-break: break-all;
+  }
+
+  /* ── Blockquote ── */
+
+  .article-richtext blockquote {
+    border-left: 4px solid rgb(212 175 55 / 0.65);
+    background: linear-gradient(135deg, rgba(6, 78, 59, 0.04), rgba(212, 175, 55, 0.08));
+    border-radius: 0 1.25rem 1.25rem 0;
+    color: rgb(39 39 42);
+    margin-top: 1.75rem;
+    margin-bottom: 1.75rem;
+    padding: 1.25rem 1.5rem;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* ── Media ── */
+
+  .article-richtext img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display: block;
+  }
+
+  .article-richtext iframe,
+  .article-richtext video,
+  .article-richtext embed,
+  .article-richtext object {
+    max-width: 100%;
+    display: block;
+  }
+
+  /* ── Dividers ── */
+
+  .article-richtext hr {
+    border: 0;
+    border-top: 1px solid rgb(228 228 231);
+    margin-top: 2.75rem;
+    margin-bottom: 2.75rem;
+  }
+
+  /* ── Code ── */
+
+  .article-richtext code {
+    background: rgb(244 244 245);
+    border-radius: 0.5rem;
+    color: rgb(24 24 27);
+    font-size: 0.9em;
+    padding: 0.18rem 0.42rem;
+    overflow-wrap: anywhere;
+    word-break: break-all;
+  }
+
+  .article-richtext pre {
+    background: rgb(9 9 11);
+    border-radius: 1.25rem;
+    color: rgb(244 244 245);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    padding: 1.25rem 1.35rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .article-richtext pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    word-break: normal;
+  }
+
+  /* ── Tables ── */
+
+  .article-richtext table {
+    width: 100%;
+    border-collapse: collapse;
+    display: block;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+  }
+
+  .article-richtext th,
+  .article-richtext td {
+    border: 1px solid rgb(228 228 231);
+    padding: 0.85rem 1rem;
+    text-align: left;
+    vertical-align: top;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  .article-richtext th {
+    background: rgb(244 244 245);
+    color: rgb(24 24 27);
+    font-weight: 700;
+  }
 }
